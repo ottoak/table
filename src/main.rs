@@ -111,7 +111,7 @@ impl Table for TableData {
     }
 
     fn print_header(&self) {
-        println!("{}", self.header_string())
+        println!("\n{}", self.header_string())
     }
 
     fn print_rows(&self) {
@@ -135,6 +135,8 @@ fn main() {
     t.set_header_format(vec![EscCode::Bold, EscCode::Underline, EscCode::Red]);
     t.add_row(row!("banana", "apple", "berry"));
     t.add_row(row!("bananarama", "appleicious", "huh"));
+    t.add_row(row!(1, 2, 3));
+    t.add_row(row!(1, 2, "this is getting absurd"));
     t.calculate_widths();
 
     t.print();
