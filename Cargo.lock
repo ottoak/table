@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "table"
+name = "displaytable"
 version = "0.1.0"
