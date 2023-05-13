@@ -16,7 +16,7 @@ pub enum EscCode {
     White,
 }
 
-pub fn format(code: &EscCode) -> String {
+fn ansi_to_str(code: &EscCode) -> String {
     match code {
         EscCode::Esc => "\x1b[".into(),
         EscCode::Bold => "1".into(),
@@ -36,11 +36,11 @@ pub fn format(code: &EscCode) -> String {
 pub fn build_format(codes: Vec<EscCode>) -> String {
     let fmt_str = codes
         .iter()
-        .map(|c| format(c))
+        .map(ansi_to_str)
         .collect::<Vec<String>>()
         .join(";");
 
-    format(&EscCode::Esc) + &fmt_str + "m"
+    ansi_to_str(&EscCode::Esc) + &fmt_str + "m"
 }
 
 #[test]
