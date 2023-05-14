@@ -15,16 +15,16 @@ pub struct Table<'a> {
 impl<'a> Table<'a> {
     pub fn new(data: &'a TableData) -> Table<'a> {
         let default_padding = 2;
-        Table {
+        let mut t = Table {
             data: data,
             padding: default_padding,
             header_fmt: String::from(""),
-            col_widths: data
-                .cols
-                .iter()
-                .map(|h| h.len() + default_padding)
-                .collect::<Vec<usize>>(),
-        }
+            col_widths: vec![0; data.cols.len()],
+        };
+
+        t.calculate_widths();
+
+        t
     }
 
     pub fn set_header_format(&mut self, fmt: Vec<EscCode>) {
@@ -32,6 +32,13 @@ impl<'a> Table<'a> {
     }
 
     pub fn calculate_widths(&mut self) {
+        self.col_widths = self
+            .data
+            .cols
+            .iter()
+            .map(|h| h.len() + self.padding)
+            .collect::<Vec<usize>>();
+
         for row in self.data.rows.iter() {
             for (i, val) in row.iter().enumerate() {
                 if val.len() + self.padding > self.col_widths[i] {
@@ -39,6 +46,11 @@ impl<'a> Table<'a> {
                 }
             }
         }
+    }
+
+    pub fn set_padding(&mut self, padding: usize) {
+        self.padding = padding;
+        self.calculate_widths();
     }
 
     pub fn represent(&self) -> String {
@@ -108,7 +120,7 @@ mod tests {
     #[test]
     fn test_col_widths_no_rows() {
         let cols = vec!["dog", "capybara", "panda"];
-        let data = TableData::new(cols);
+        let data = TableData::new(cols, Vec::new());
 
         let t = Table::new(&data);
 
@@ -118,15 +130,15 @@ mod tests {
     }
 
     #[test]
-    fn test_col_widths_with_rows() {
+    fn test_col_widths_with_row() {
         let cols = vec!["dog", "capybara", "panda"];
 
-        let mut data = TableData::new(cols);
-        data.add_row(row!("banana", "apple", "berry"));
+        let rows = vec![row!("banana", "apple", "berry")];
 
-        let mut t = Table::new(&data);
+        let data = TableData::new(cols, rows);
 
-        t.calculate_widths();
+        let t = Table::new(&data);
+
         let expected_widths = vec![8, 10, 7];
 
         assert_eq!(t.col_widths, expected_widths);

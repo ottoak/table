@@ -3,7 +3,7 @@ use displaytable::{row, Table, TableData};
 #[test]
 fn test_header() {
     let cols = vec!["A", "B", "C"];
-    let data = TableData::new(cols);
+    let data = TableData::new(cols, Vec::new());
 
     let t = Table::new(&data);
     let table_rep = t.represent();
@@ -16,9 +16,8 @@ fn test_header() {
 #[test]
 fn test_one_row() {
     let cols = vec!["A", "B", "C"];
-    let mut data = TableData::new(cols);
-
-    data.add_row(row!("cat", "dog", "bird"));
+    let rows = vec![row!("cat", "dog", "bird")];
+    let data = TableData::new(cols, rows);
 
     let mut t = Table::new(&data);
 
@@ -39,10 +38,9 @@ cat  dog  bird
 #[test]
 fn test_two_rows() {
     let cols = vec!["A", "B", "C"];
-    let mut data = TableData::new(cols);
 
-    data.add_row(row!("cat", "dog", "bird"));
-    data.add_row(row!("bird", "dog", "cat"));
+    let rows = vec![row!("cat", "dog", "bird"), row!("bird", "dog", "cat")];
+    let data = TableData::new(cols, rows);
 
     let mut t = Table::new(&data);
 
