@@ -1,7 +1,6 @@
 use crate::ansi_esc_codes::{build_format, EscCode};
 use crate::table_data::TableData;
 
-// TODO: finalize struct
 #[derive(Debug)]
 pub struct Table<'a> {
     data: &'a TableData,
@@ -10,13 +9,11 @@ pub struct Table<'a> {
     col_widths: Vec<usize>,
 }
 
-// TODO
-// https://stackoverflow.com/questions/28951503/how-can-i-create-a-function-with-a-variable-number-of-arguments
 impl<'a> Table<'a> {
     pub fn new(data: &'a TableData) -> Table<'a> {
         let default_padding = 2;
         let mut t = Table {
-            data: data,
+            data,
             padding: default_padding,
             header_fmt: String::from(""),
             col_widths: vec![0; data.cols.len()],

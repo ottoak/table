@@ -38,13 +38,11 @@ cat  dog  bird
 #[test]
 fn test_two_rows() {
     let cols = vec!["A", "B", "C"];
-
     let rows = vec![row!("cat", "dog", "bird"), row!("bird", "dog", "cat")];
+
     let data = TableData::new(cols, rows);
 
-    let mut t = Table::new(&data);
-
-    t.calculate_widths();
+    let t = Table::new(&data);
 
     let table_rep = t.represent();
 

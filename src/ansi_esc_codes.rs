@@ -43,13 +43,18 @@ pub fn build_format(codes: Vec<EscCode>) -> String {
     ansi_to_str(&EscCode::Esc) + &fmt_str + "m"
 }
 
-#[test]
-fn test_build_format() {
-    let fmts = vec![EscCode::Bold, EscCode::Underline, EscCode::Red];
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let fmt_str = &build_format(fmts);
+    #[test]
+    fn test_build_format() {
+        let fmts = vec![EscCode::Bold, EscCode::Underline, EscCode::Red];
 
-    let expected = "\x1b[1;4;31m";
+        let fmt_str = &build_format(fmts);
 
-    assert_eq!(fmt_str, expected);
+        let expected = "\x1b[1;4;31m";
+
+        assert_eq!(fmt_str, expected);
+    }
 }
